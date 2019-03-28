@@ -1,4 +1,6 @@
-<!doctype html>
+<script>window.location = "/home";</script>
+
+{{-- <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -6,10 +8,10 @@
 
         <title>Laravel</title>
 
-        <!-- Fonts -->
+        
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-        <!-- Styles -->
+        
         <style>
             html, body {
                 background-color: #fff;
@@ -97,3 +99,4 @@
         </div>
     </body>
 </html>
+ --}}

@@ -23,14 +23,25 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Square Roots') }}
+                <a class="navbar-brand" href="/home">
+                     <table>
+                        <tr>
+                            <td rowspan="2"><img src="{{URL::asset('/images/squarerootslogo.png')}}" alt="profile Pic" height="50" width="50"></td>
+                            <td class="pl-3" style="padding:0; margin:0;"><h2 class="d-inline">Square Roots</h2><br></td>  
+                        </tr>
+                        <tr>
+                            <td class="pl-3" style="padding: 0; margin:0;"><small class="d-inline">local produce from farm to table</small></td>
+                        </tr>
+                     </table>                        
+                    {{-- </div> --}}
                 </a>
+                {{-- START OF NAV LINKS --}}
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 
@@ -39,15 +50,63 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+
+                    {{-- if a user is logged in --}}
+                @if(Auth::user() !== null)
+                    {{-- check if its an admin --}}
+                    @if(Auth::user()->isAdmin == 'true')
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/howtoorder">Products Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/shop">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/registry">Registry</a>
+                            </li>
+                        </ul>
+                    @else
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/howtoorder">How to Order</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/shop">Shop</a>
+                            </li>    
+                            <li class="nav-item">
+                                <a class="nav-link" href="/orders/{{Auth::user()->id}}">My Orders</a>
+                            </li>
+                        </ul>
+                    @endif
+                    @else
+                    <ul class="navbar-nav mr-auto ml-">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/howtoorder">How to Order</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/join">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/shop">Shop</a>
+                            </li>                            
+                        </ul>
+                @endif
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
+                            {{-- @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif
+                            @endif --}}
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

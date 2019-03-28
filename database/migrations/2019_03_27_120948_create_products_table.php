@@ -18,8 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text("description");
             $table->decimal('price', 10, 2);
-            $table->decimal('stocks', 3, 0);
             $table->string("img_path");
+            $table->string('sku', 8);
             $table->string('isActive')->default('true');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
