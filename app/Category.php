@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace squareroots;
 
 use Illuminate\Database\Eloquent\Model;
 
