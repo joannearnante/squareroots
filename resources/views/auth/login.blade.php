@@ -19,7 +19,7 @@
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>Your credentials are invalid or your account is no longer active.</strong>
                                     </span>
                                 @endif
                             </div>

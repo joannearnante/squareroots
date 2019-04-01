@@ -20,6 +20,13 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+        /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+
     /**
      * Where to redirect users after login.
      *
@@ -32,8 +39,17 @@ class LoginController extends Controller
      *
      * @return void
      */
+
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        //return $request->only($this->username(), 'password');
+        return ['email' => $request->{$this->username()}, 'password' => $request->password, 'isActive' => 'true'];
+    }
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
+
+
 }

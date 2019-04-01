@@ -12,13 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
-Route::get('/registry', function () {
-    return view('registry');
+Route::get('/home', function () {
+    return view('home');
 });
+
+/*Route::get('/registry', function () {
+    return view('admin.registry');
+});*/
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('members', 'MemberController');
+
+Route::resource('products', 'ProductController');

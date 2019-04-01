@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body>
     <div id="app">
@@ -57,13 +59,13 @@
                     @if(Auth::user()->isAdmin == 'true')
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/howtoorder">Products Dashboard</a>
+                                <a class="nav-link" href="/products">Inventory</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/shop">Orders</a>
+                                <a class="nav-link" href="/orders">Orders</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/registry">Registry</a>
+                                <a class="nav-link" href="/members">Registry</a>
                             </li>
                         </ul>
                     @else
@@ -75,7 +77,7 @@
                                 <a class="nav-link" href="/howtoorder">How to Order</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/shop">Shop</a>
+                                <a class="nav-link" href="/products">Shop</a>
                             </li>    
                             <li class="nav-item">
                                 <a class="nav-link" href="/orders/{{Auth::user()->id}}">My Orders</a>
