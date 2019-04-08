@@ -62,7 +62,7 @@ class MemberController extends Controller
      */
     public function show(User $user)
     {
-        return view("admin.registry", compact('users'));
+        //
     }
 
     /**
@@ -74,7 +74,7 @@ class MemberController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view("admin.edit_member", compact('user'));
+        return view("registry", compact('user'));
     }
 
     /**
@@ -88,17 +88,17 @@ class MemberController extends Controller
     {
         $user = User::find($id);
         $rules = array(
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => 'required', 'string', 'max:255',
+            'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+            'password' => 'required', 'string', 'min:8', 'confirmed',
         );
 
         $this->validate($request, $rules);
 
-       $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+        /*dd($request);*/
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
 
         $user->save();
 
