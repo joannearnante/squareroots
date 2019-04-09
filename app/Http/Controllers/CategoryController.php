@@ -44,7 +44,7 @@ class CategoryController extends Controller
         $category = new Category;
         $category->name = $request->name;
         $category->save();
-        $categories = Category::all();
+
         return redirect('/categories/create');
     }
 
