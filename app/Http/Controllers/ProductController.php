@@ -30,7 +30,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view("admin.add_products", compact('categories'));
+        return view("admin.inventory", compact('categories'));
     }
 
     /**
@@ -88,7 +88,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $categories = Category::all();
-        return view("admin.edit_product", compact('product', 'categories'));
+        return view("admin.inventory", compact('product', 'categories'));
     }
 
     /**
@@ -100,7 +100,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-         $product = Product::find($id);
+        $product = Product::find($id);
         $rules = array(
             "name" => "required",
             "description" => "required",
