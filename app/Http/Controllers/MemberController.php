@@ -91,6 +91,7 @@ class MemberController extends Controller
             'name' => 'required', 'string', 'max:255',
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
             'password' => 'required', 'string', 'min:8', 'confirmed',
+            'isAdmin' => 'required',
         );
 
         $this->validate($request, $rules);
@@ -99,6 +100,7 @@ class MemberController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
+        $user->isAdmin = $request->input('isAdmin');
 
         $user->save();
 

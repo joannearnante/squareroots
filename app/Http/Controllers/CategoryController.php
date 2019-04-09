@@ -2,6 +2,7 @@
 
 namespace squareroots\Http\Controllers;
 
+use squareroots\Product;
 use squareroots\Category;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        $products = Product::all();
+        return view("admin.inventory", compact('products','categories'));
     }
 
     /**
@@ -36,7 +39,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $rules = array(
-            "name" => "required"
+            'name' => ['required', 'string', 'max:255'],
         );
 
         $this->validate($request, $rules);
@@ -45,7 +48,7 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->save();
 
-        return redirect('/categories/create');
+        return redirect("/categories");
     }
 
     /**

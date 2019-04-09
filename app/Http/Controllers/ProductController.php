@@ -2,6 +2,7 @@
 
 namespace squareroots\Http\Controllers;
 
+use DB;
 use squareroots\Product;
 use squareroots\Category;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,19 @@ class ProductController extends Controller
         $products = Product::all();
         $categories = Category::all();
         $user = Auth::user();
-        return view("admin.inventory", compact('products', 'categories', 'user'));
+
+        $uniqueproducts = Product::distinct()->get(['name'])->sortBy(['name']);
+
+        $uniqueproductscount = DB::table('products')
+            ->select(DB::raw('name, count(*) as product_count'))
+            ->groupBy('name')
+            ->get();
+        /*squareroots::table('products')
+                 ->select('name', squareroots::raw('count(*) as total'))
+                 ->groupBy('name')
+                 ->get();*/
+
+        return view("admin.inventory", compact('products', 'categories', 'user', 'uniqueproducts', 'uniqueproductscount'));
     }
 
     /**
@@ -30,7 +43,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view("admin.inventory", compact('categories'));
+        $products = Product::all();
+        return view("admin.inventory", compact('categories', 'products'));
     }
 
     /**
@@ -61,7 +75,7 @@ class ProductController extends Controller
         $destination = "images/";
         $image->move($destination, $image_name);
 
-        $product->img_path = $destination.$image_name;
+        $product->img_path = "/".$destination.$image_name;
         $product->save();
 
         return redirect("/products/create");
@@ -120,7 +134,7 @@ class ProductController extends Controller
             $destination = "images/";
             $image->move($destination, $image_name);
 
-            $product->img_path = $destination.$image_name;
+            $product->img_path = "/".$destination.$image_name;
         }
         
         $product->save();

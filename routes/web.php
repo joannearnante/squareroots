@@ -28,3 +28,7 @@ Auth::routes();
 Route::resource('members', 'MemberController');
 
 Route::resource('products', 'ProductController');
+
+Route::resource('categories', 'CategoryController');
+
+/*Route::get('/products', 'SortController@stocksummary');*/

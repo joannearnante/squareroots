@@ -11,7 +11,6 @@
                     <div class="card-body">
                         <form method="POST" action="/members">
                             @csrf
-
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -64,7 +63,7 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-success">
                                         {{ __('Register') }}
                                     </button>
                                 </div>
@@ -81,7 +80,17 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Manage Registry</div>
+                    <div class="card-header">
+                            Manage Registry
+                            <span class="d-inline-block" style="width: 53%"></span>
+                            Search
+                                <form action="/search" method="POST" role="search" class="d-inline">
+                                @csrf
+                                    <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
+                                    placeholder="search registry">
+                                    <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
+                                </form>
+                            </div>
 
                     <div class="card-body">
                         <table class="table table-striped">
@@ -134,7 +143,7 @@
                                                 @else
                                                     <button class="btn btn-danger col-5 text-center"><i class="fas fa-eye-slash" style="color:white;"></i></button>
                                                 @endif
-                                                </form>                           
+                                            </form>                     
                                         </td>
                                     </tr>
                                 @endforeach
@@ -192,10 +201,21 @@
                                         <input id="{{$user->id}}password-confirm" type="password" class="form-control" name="password_confirmation" required>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="{{$user->id}}isAdmin" class="col-md-4 col-form-label text-md-right">Is Admin</label>
+
+                                    <div class="col-md-6">
+                                        <select id="isAdmin" name="isAdmin">
+                                            <option value="true">True</option>
+                                            <option value="false">False</option>
+                                        </select>
+                                    </div>
+                                </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="submit" class="btn btn-success">Save Changes</button>
                         </div>
                     </form>
                 </div>

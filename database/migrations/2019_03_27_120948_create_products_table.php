@@ -19,7 +19,6 @@ class CreateProductsTable extends Migration
             $table->text("description");
             $table->decimal('price', 10, 2);
             $table->string("img_path");
-            $table->string('sku', 8);
             $table->string('isActive')->default('true');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
