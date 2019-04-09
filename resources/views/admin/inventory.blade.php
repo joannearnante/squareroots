@@ -152,9 +152,9 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            @foreach($uniqueproducts as  $uniqueproduct)
-                            {{$uniqueproduct->name}}
-                            @endforeach
+                            {{-- @foreach($uniqueproducts as  $uniqueproduct)
+                            {{$uniqueproduct->name}} --}}
+                            {{-- @endforeach --}}
                             @foreach($uniqueproductscount as  $uniqueproductcount)
                             {{$uniqueproductscount}}
                             @endforeach
