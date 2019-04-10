@@ -152,12 +152,12 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            @foreach($uniqueproducts as  $uniqueproduct)
+                            {{-- @foreach($uniqueproducts as  $uniqueproduct)
                             {{$uniqueproduct->name}}
                             @endforeach
                             @foreach($uniqueproductscount as  $uniqueproductcount)
                             {{$uniqueproductscount}}
-                            @endforeach
+                            @endforeach --}}
                         </div>
                     </div>
                 </div>
@@ -192,21 +192,55 @@
                                                     {{$category->name}}
                                                 </td>
                                                 <td>
-                                                    <form method="POST" action="/category/{{$category->id}}">
-                                                        <a href="/categories/{{$category->id}}" class="btn btn-info col-4 text-center"><i class="fas fa-edit" style="color:white;"></i></a>
+                                                    <form method="POST" action="/categories/{{$category->id}}">
+                                                        <a class="btn btn-info col-4 text-center" data-toggle="modal" data-target="#modal{{$category->id}}" data-id="modal{{$category->id}}">
+                                                                <i class="fas fa-edit" style="color:white;"></i>
+                                                        </a>
                                                         @csrf
                                                         @method('DELETE')
-                                                        @if($category->isActive == 'true')
-                                                        <button class="btn btn-danger col-4 text-center"><i class="fas fa-eye" style="color:white;"></i></button>
-                                                        @else
-                                                        <button class="btn btn-danger col-4 text-center"><i class="fas fa-eye-slash" style="color:white;"></i></button>
-                                                        @endif
+                                                            @if($category->isActive == 'true')
+                                                                <button class="btn btn-danger col-4 text-center" type="submit"><i class="fas fa-eye" style="color:white;"></i></button>
+                                                            @else
+                                                                <button class="btn btn-danger col-4 text-center"><i class="fas fa-eye-slash" style="color:white;"></i></button>
+                                                            @endif
                                                         </form>                                 
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                              </table>
+                             {{-- MODAL FORM --}}
+                            @foreach($categories as $category)
+                                <div class="modal fade" tabindex="-1" id="modal{{$category->id}}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Edit Category</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        <form method="POST" action="/categories/{{$category->id}}" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                @csrf
+                                                @method("PATCH")
+                                                <div class="form-group row">
+                                                    <label for="{{$category->id}}name" class="col-md-4 col-form-label text-md-right">Name</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="{{$category->id}}name" type="text" class="form-control" name="name" value="{{$category->name}}" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

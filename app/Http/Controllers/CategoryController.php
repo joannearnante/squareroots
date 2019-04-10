@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $products = Product::all();
-        return view("admin.inventory", compact('products','categories'));
+        return view("admin.inventory", compact('categories', 'products'));
     }
 
     /**
@@ -27,7 +27,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view("admin.inventory");
+        $categories = Category::all();
+        return view("admin.registry", compact('categories'));
     }
 
     /**
@@ -68,9 +69,10 @@ class CategoryController extends Controller
      * @param  \squareroots\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        return view("inventory", compact('category'));
     }
 
     /**
@@ -80,7 +82,7 @@ class CategoryController extends Controller
      * @param  \squareroots\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update($id, Request $request)
     {
         $category = Category::find($id);
         $rules = array(
@@ -102,8 +104,16 @@ class CategoryController extends Controller
      * @param  \squareroots\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        if($category->isActive == 'true'){
+            $category->isActive = 'false';
+            $category->save();
+        } else {
+            $category->isActive = 'true';
+            $category->save();
+        }
+        return redirect("/categories");
     }
 }

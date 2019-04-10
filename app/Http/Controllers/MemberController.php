@@ -3,6 +3,7 @@
 namespace squareroots\Http\Controllers;
 
 use squareroots\User;
+use squareroots\Category;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
