@@ -1,0 +1,21 @@
+.captiontext {
+  font-family: 'Raleway', sans-serif;
+}
+
+@media screen and (min-width: 320px) {
+  .captiontext {
+    font-size: 1.2rem;
+  }
+@media screen and (min-width: 370px) {
+  .captiontext {
+    font-size: 1.5rem;
+  }
+}
+@media screen and (min-width: 750px) {
+  .captiontext {
+    font-size: 3.5rem;
+  }
+@media screen and (min-width: 1000px) {
+  .captiontext {
+    font-size: 5rem;
+  }
