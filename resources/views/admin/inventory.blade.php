@@ -16,7 +16,7 @@
                                 <button class="btn-light btn col-3" onclick="activeinventorycard()">Manage Active Inventory</button>
                                 <button class="btn-light btn col-3" onclick="categoriescard()">Manage Categories</button>
                                 <button class="btn-light btn col-3">
-                                    <a href="/products/create" id="addproductbtn">Add Product</a>
+                                    <a href="/products/create" id="addproductbtn" style="text-decoration: none">Add Product</a>
                                 </button>
                                 <button class="btn-light btn col-3" onclick="inventoryhistorycard()">Manage Inventory History</button>
                             </div>
