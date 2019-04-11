@@ -13,19 +13,21 @@
                         <h2>Welcome, {{Auth::user()->name}}!</h2>
                         <p>What would you like to do today?</p>
                         <nav class="nav nav-pills nav-justified">
-                        <a class="nav-link">Manage Active Inventory</a>
-                        <a class="nav-link">Manage Categories</a>
-                        <a href="/products/create" class="nav-link" style="text-decoration: none;">Add Product</a>
-                        <a class="nav-link">Manage Inventory History</a>
+                                <button class="btn-light btn col-3" onclick="activeinventorycard()">Manage Active Inventory</button>
+                                <button class="btn-light btn col-3" onclick="categoriescard()">Manage Categories</button>
+                                <button class="btn-light btn col-3">
+                                    <a href="/products/create" id="addproductbtn">Add Product</a>
+                                </button>
+                                <button class="btn-light btn col-3" onclick="inventoryhistorycard()">Manage Inventory History</button>
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
         </div>
-        <br>
 
 {{-- ACTIVE INVENTORY --}}
-        <div class="container">
+        <div class="container" id="activeinventorycard">
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -111,7 +113,7 @@
         </div>
 {{-- CATEGORIES --}} 
         <br>
-        <div class="container" {{-- style="display: none;" --}}>
+        <div class="container" {{-- style="display: none;" --}} id="categoriescard" style="display: none;">
             <div class="row justify-content-center">
 {{-- CATEGORIES LIST --}}
                 <div class="col-md-6">
@@ -220,7 +222,7 @@
         <br>
 
 {{-- INVENTORY HISTORY --}}
-        <div class="container">
+        <div class="container" id="inventoryhistorycard" style="display: none;">
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -285,36 +287,6 @@
                                                 <td>
                                                     {{$product->updated_at}}
                                                 </td>
-                                                {{-- <td> --}}
-                                                {{-- <form method="POST" action="/products/{{$product->id}}/edit"> --}}
-                                                       {{--  <a class="btn btn-info text-center" href="/products/{{$product->id}}/edit"><i class="fas fa-edit" style="color:white; width: auto;"></i></a> --}}
-                                                       {{--  @csrf
-                                                        @method('DELETE')
-                                                            @if($product->status == 'active')
-                                                        <button class="btn btn-success text-center" style="width: auto;"><i class="fas fa-eye" style="color:white;"></i></button>
-                                                        @else
-                                                        <button class="btn btn-danger text-center" style="width: auto;"><i class="fas fa-eye-slash" style="color:white;"></i></button>
-                                                        @endif
-                                                    </form>  --}}
-
-                                                           {{-- <form method="POST" action="/products/{{$product->id}}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            @if($product->status == 'active')
-                                                                <button class="btn btn-success text-center d-inline-block" style="width: auto;"><i class="fas fa-eye" style="color:white;"></i></button>
-                                                                </form>
-                                                            @else
-                                                             <button class="btn btn-danger text-center d-inline-block" style="width: auto;"><i class="fas fa-eye-slash" style="color:white;"></i></button>
-                                                            </form>
-                                                        @endif --}}
-                                             {{--    @if($product->status == 'active')
-                                                    <button class="btn btn-danger text-center" style="width: auto;"><i class="fas fa-eye" style="color:white;"></i></button>
-                                                @else
-                                                    <button class="btn btn-danger col-5 text-center" style="width: auto;"><i class="fas fa-eye-slash" style="color:white;"></i></button>
-                                                @endif --}}
-
-                   
-                                                {{-- </td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>

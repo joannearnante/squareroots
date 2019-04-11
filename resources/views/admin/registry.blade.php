@@ -82,7 +82,7 @@
                 <div class="card">
                     <div class="card-header">
                             Manage Registry
-                            <span class="d-inline-block" style="width: 53%"></span>
+                            <span class="d-inline-block" style="width: 50%"></span>
                             Search
                                 <form action="/search" method="POST" role="search" class="d-inline">
                                 @csrf
