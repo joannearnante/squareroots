@@ -54,7 +54,7 @@ class OrderController extends Controller
         $order->quantity = $request->quantity;
 
         $order->total = ((int)$request->price * (int)$request->quantity);
-        $order->refNo = ((int)$order->user_id * (int)$order->product * (int)$order->total);
+        $order->refNo = rand(000001,999999);
 
         $order->save();
 
@@ -90,9 +90,20 @@ class OrderController extends Controller
      * @param  \squareroots\order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, order $order)
+    public function update(Request $request, $id)
     {
-        //
+        $order = Order::find($id);
+
+        $order->user_id = $request->user_id;
+        $order->product = $request->product;
+        $order->quantity = $request->quantity;
+        $order->total = $request->total;
+        $order->refNo = $request->refNo;
+        $order->status = $request->status;
+        
+        $order->save();
+
+        return redirect("/orders");
     }
 
     /**

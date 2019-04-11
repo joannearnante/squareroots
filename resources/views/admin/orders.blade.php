@@ -13,31 +13,45 @@
 									<thead>
 										<tr>
 											<td>Reference Number</td>
+											<td>User Id</td>
 											<td>Date</td>
 											<td>Products</td>
 											<td>Quantity</td>
 											<td>Total</td>
 											<td>Status</td>
+											<td>Action</td>
 										</tr>
 									</thead>
 									<tbody>
 										@foreach($orders as $order)
                                             <tr>
                                             	<td>{{$order->refNo}}</td>
+                                            	<td>{{$order->user_id}}</td>
 												<td>{{$order->created_at}}</td>
 												<td>{{$order->product}}</td>
 												<td>{{$order->quantity}}</td>
 												<td>{{$order->total}}</td>
+												<td>{{$order->status}}</td>
+													<br>
 												<td>
+													@if($order->status == 'pending')
 													<form method="POST" action="/orders/{{$order->id}}" class="d-inline-block">
                                                         @csrf
+                                                        @method('PUT')
                                                         <select name="status">
-                                                        	<option value="{{$order->status}}">{{$order->status}}</option>
                                                         	<option value="confirmed">confirmed</option>
-                                                        	<option value="confirmed">completed</option>
-                                                        	<option value="confirmed">cancelled</option>
+                                                        	<option value="completed">completed</option>
+                                                        	<option value="cancelled">cancelled</option>
                                                         </select>
+                                                        <input type="hidden" name="quantity" class="form-control" value="{{$order->quantity}}">
+						                                <input type="hidden" name="product" value="{{$order->product}}">
+						                                <input type="hidden" name="user_id" value="{{$order->user_id}}">
+						                                <input type="hidden" name="refNo" value="{{$order->refNo}}">
+						                                <input type="hidden" name="price" value="{{$order->total}}">
+                                                        <input type="submit" name="">
                                                     </form>
+                                                    @else
+                                                    @endif
                                                 </td>
                                             </tr>
 	                                    @endforeach
@@ -77,7 +91,7 @@
 												<td>{{$order->product}}</td>
 												<td>{{$order->quantity}}</td>
 												<td>{{$order->total}}</td>
-												<td></td>
+												<td>{{$order->status}}</td>
                                             </tr>
                                         @endif
                                     @endforeach

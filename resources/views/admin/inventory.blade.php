@@ -230,7 +230,7 @@
                         <h4>Inventory History</h4>
                         </div>
                         <div class="card-body">
-                            <form action="/search" method="POST" role="search" class="d-inline">
+                            {{-- <form action="/search" method="POST" role="search" class="d-inline">
                             @csrf
                                 <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
                                 placeholder="search inventory">
@@ -249,16 +249,16 @@
                                 @csrf
                                 <button class="btn text-center btn-light" type="submit">Sort By Name</i></button>
                             </form>
-                            <br><br>
+                            <br><br> --}}
                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Category</th>
                                         <th>Name</th>
                                         <th>SKU</th>
-                                        <th>Status</th>
                                         <th>Date Created</th>
                                         <th>Last Updated</th>
+                                        <th>Status</th>
                                         {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
@@ -279,13 +279,13 @@
                                                     {{$product->id}}
                                                 </td>
                                                 <td>
-                                                    {{$product->status}}
-                                                </td>
-                                                <td>
                                                     {{$product->created_at}}
                                                 </td>
                                                 <td>
                                                     {{$product->updated_at}}
+                                                </td>
+                                                <td>
+                                                    {{$product->status}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -308,28 +308,24 @@
         </div>
         <br>
             @foreach($productstocks as $product)
-            <div class="inline-block" style="width: 25%; height: 35rem; float: left; padding: 5px;">
-                <div class="card" style="height: 100%;">
-                <img class="card-img-top" src="{{$product->img_path}}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{$product->name}}}</h5>
-                    <p class="card-text">{{$product->price}}</p>
-                    <form method="POST" action="/orders" enctype="multipart/form-data">
-                            @csrf
-                                <div class="form-group">
-                                Quantity:
-                                <input type="text" name="quantity" class="form-control"><br>
-                                <input type="hidden" name="product" value="{{$product->name}}"><br>
-                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}"><br>
-                                <input type="hidden" name="price" value="{{$product->price}}"><br>
-                                <button type="submit" class="btn btn-success">Order Item</button>
-                                </div>
+                <div class="card d-inline-block col-lg-3">
+                    <img class="card-img-top" src="{{$product->img_path}}" alt="Card image cap"data-toggle="modal" data-target="#modal{{$product->name}}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$product->name}}</h5>
+                            <p class="card-text">&#8369;{{$product->price}}</p>
+                            <form method="POST" action="/orders" enctype="multipart/form-data" class="d-inline-block">
+                                    @csrf
+                                    <div class="form-group">
+                                        Quantity:&nbsp;
+                                        <input type="text" name="quantity" class="form-control d-inline-block col-6"><br>
+                                        <input type="hidden" name="product" value="{{$product->name}}">
+                                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                        <input type="hidden" name="price" value="{{$product->price}}"><br>
+                                        <button type="submit" class="col-8 btn btn-success d-inline-block">order Item</button>
+                                    </div>
                             </form>
-                    <button class="btn btn-info text-center d-inline-block text-white" data-toggle="modal" data-target="#modal{{$product->name}}" style="width:auto;">View Details</button>
-                </div>
-            </div>
-        </div>
-    </div>      
+                        </div>
+                    </div>     
     {{-- ABOUT MODAL --}}
     <div class="modal fade" tabindex="-1" id="modal{{$product->name}}">
         <div class="modal-dialog modal-lg" role="document">
@@ -346,16 +342,16 @@
                             <img src="{{$product->img_path}}" class="img-thumbnail">
                         </div>
                         <div class="col-lg-4">
-                            <p>{{$product->price}}</p>
+                            <p>&#8369;{{$product->price}}</p>
                             <p>{{$product->description}}</p>
                             <form method="POST" action="/orders" enctype="multipart/form-data">
                             @csrf
                                 <div class="form-group">
                                 Quantity:
                                 <input type="text" name="quantity" class="form-control"><br>
-                                <input type="hidden" name="product" value="{{$product->name}}"><br>
-                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}"><br>
-                                <input type="hidden" name="price" value="{{$product->price}}"><br>
+                                <input type="hidden" name="product" value="{{$product->name}}">
+                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                <input type="hidden" name="price" value="{{$product->price}}">
                                 <button type="submit" class="btn btn-success">Order Item</button>
                                 </div>
                             </form>
