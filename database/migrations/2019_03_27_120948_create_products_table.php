@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->text("description");
             $table->decimal('price', 10, 2);
             $table->string("img_path");
-            $table->string('isActive')->default('true');
+            $table->enum('status', array('active', 'inactive', 'sold'));
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
             //relate categories and items

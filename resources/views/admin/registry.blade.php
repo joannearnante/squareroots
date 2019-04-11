@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(Auth::user()->isAdmin == 'true')
+    {{-- @if(Auth::user()->isAdmin == 'true') --}}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -139,7 +139,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 @if($user->isActive == 'true')
-                                                    <button class="btn btn-danger col-5 text-center"><i class="fas fa-eye" style="color:white;"></i></button>
+                                                    <button class="btn btn-success col-5 text-center"><i class="fas fa-eye" style="color:white;"></i></button>
                                                 @else
                                                     <button class="btn btn-danger col-5 text-center"><i class="fas fa-eye-slash" style="color:white;"></i></button>
                                                 @endif
@@ -227,7 +227,7 @@
             </div>
         </div>
     </div>
-    @else
+   {{--  @else
         invalid
-    @endif
+    @endif --}}
 @endsection

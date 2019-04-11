@@ -84,7 +84,7 @@
                                 <a class="nav-link" href="/products">Shop</a>
                             </li>    
                             <li class="nav-item">
-                                <a class="nav-link" href="/orders/{{Auth::user()->id}}">My Orders</a>
+                                <a class="nav-link" href="/orders">My Orders</a>
                             </li>
                         </ul>
                     @endif
@@ -99,9 +99,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/join">Register</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/shop">Shop</a>
-                            </li>                            
                         </ul>
                 @endif
                         @guest

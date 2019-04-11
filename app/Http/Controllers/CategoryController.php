@@ -2,6 +2,7 @@
 
 namespace squareroots\Http\Controllers;
 
+use DB;
 use squareroots\Product;
 use squareroots\Category;
 use Illuminate\Http\Request;
@@ -17,7 +18,20 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $products = Product::all();
-        return view("admin.inventory", compact('categories', 'products'));
+
+        $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
+            ->groupBy('category_id')
+            ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('category_id')
+            ->orderBy('name')
+            ->get();
+
+        return view("admin.inventory", compact('categories', 'products', 'productstocks'));
     }
 
     /**

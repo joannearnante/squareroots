@@ -21,18 +21,21 @@ class ProductController extends Controller
         $categories = Category::all();
         $user = Auth::user();
 
-        $uniqueproducts = Product::distinct()->get(['name'])->sortBy(['name']);
-
-        $uniqueproductscount = DB::table('products')
-            ->select(DB::raw('name, count(*) as product_count'))
+        $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
+            ->groupBy('category_id')
             ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('category_id')
+            ->orderBy('name')
             ->get();
-        /*squareroots::table('products')
-                 ->select('name', squareroots::raw('count(*) as total'))
-                 ->groupBy('name')
-                 ->get();*/
 
-        return view("admin.inventory", compact('products', 'categories', 'user', 'uniqueproducts', 'uniqueproductscount'));
+        /*dd($productstocks);*/
+
+        return view("admin.inventory", compact('products', 'categories', 'user', 'productstocks'));
     }
 
     /**
@@ -44,7 +47,20 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $products = Product::all();
-        return view("admin.inventory", compact('categories', 'products'));
+
+       $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
+            ->groupBy('category_id')
+            ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('category_id')
+            ->orderBy('name')
+            ->get();
+
+        return view("admin.add_product", compact('categories', 'products','productstocks'));
     }
 
     /**
@@ -78,7 +94,7 @@ class ProductController extends Controller
         $product->img_path = "/".$destination.$image_name;
         $product->save();
 
-        return redirect("/products/create");
+        return redirect("/products");
     }
 
     /**
@@ -98,11 +114,11 @@ class ProductController extends Controller
      * @param  \squareroots\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
         $product = Product::find($id);
         $categories = Category::all();
-        return view("admin.inventory", compact('product', 'categories'));
+        return view("admin.edit_product", compact('product', 'categories'));
     }
 
     /**
@@ -112,19 +128,37 @@ class ProductController extends Controller
      * @param  \squareroots\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $rules = array(
+        /*$oldname = Product::select('name')->where('id', $id)->get();*/
+        $oldname = Product::where('id', '=', $id)
+            ->pluck('name');
+
+/*        $rules = array(
             "name" => "required",
             "description" => "required",
             "price" => "required|numeric"
         );
 
-        $this->validate($request, $rules);
+        $this->validate($request, $rules);*/
 
-        $product->name = $request->name;
-        $product->description = $request->description;
+        $newname = $request->name;
+        $newprice = $request->price;
+        $newdescription = $request->description;
+
+        if($request->file('image')!=null){
+            $image = $request->file('image');
+            $image_name = time(). "." . $image->getClientOriginalExtension();
+            $destination = "images/";
+            $image->move($destination, $image_name);
+
+            $newimage = "/".$destination.$image_name;
+        }
+
+        $update = Product::where('name', '=', $oldname)->update(['name' => $newname, 'price' => $newprice, 'description' => '$newdescription', 'img_path' => $newimage]);
+
+/*        $product->name = $request->name;*/
+        /*$product->description = $request->description;
         $product->price = $request->price;
         $product->category_id = $request->category;
 
@@ -135,9 +169,11 @@ class ProductController extends Controller
             $image->move($destination, $image_name);
 
             $product->img_path = "/".$destination.$image_name;
-        }
+        }*/
         
-        $product->save();
+       /* $product->update(['name' => $refname, 'price' => $product->price]);*/
+
+        /*dd($product);*/
 
         return redirect("/products");
     }
@@ -148,16 +184,95 @@ class ProductController extends Controller
      * @param  \squareroots\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
         $product = Product::find($id);
-        if($product->isActive == 'true'){
-            $product->isActive = 'false';
+        if($product->status == 'active'){
+            $product->status = 'disabled';
             $product->save();
         } else {
-            $product->isActive = 'true';
+            $product->status = 'active';
             $product->save();
         }
         return redirect("/products");
     }
+
+    public function subtract($name) {
+        $product = Product::where('name', $name)->first();
+        $product->status = 'disabled';
+        $product->save();
+        return redirect("/products");
+    }
+
+    public function add($name) {
+        $product = Product::where('name', $name)->first();
+        $newproduct = $product->replicate();
+        $product->status = 'active';
+        $newproduct->save();
+        return redirect("/products");
+    }
+
+    public function disableall($name) {
+
+        $disable = Product::where('name', '=', $name)/*->update('status','disabled')*/;
+        dd($disable);
+
+        return redirect("/products");
+    }
+
+    public function sortbyprice() {
+        $categories = Category::all();
+        $products = Product::all();
+
+       $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
+            ->groupBy('category_id')
+            ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('price', 'DESC')
+            ->get();
+
+        return view("admin.inventory", compact('categories', 'products','productstocks'));
+    }
+
+    public function sortbyname() {
+        $categories = Category::all();
+        $products = Product::all();
+
+       $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
+            ->groupBy('category_id')
+            ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('name')
+            ->get();
+
+        return view("admin.inventory", compact('categories', 'products','productstocks'));
+    }
+
+     public function sortbycategory() {
+        $categories = Category::all();
+        $products = Product::all();
+
+       $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
+            ->groupBy('category_id')
+            ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('category_id')
+            ->orderBy('name')
+            ->get();
+
+        return view("admin.inventory", compact('categories', 'products','productstocks'));
+    }
+    
 }
