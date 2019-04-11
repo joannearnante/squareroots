@@ -314,7 +314,17 @@
                 <div class="card-body">
                     <h5 class="card-title">{{$product->name}}}</h5>
                     <p class="card-text">{{$product->price}}</p>
-                    <p class="card-text">{{$product->description}}}</p>
+                    <form method="POST" action="/orders" enctype="multipart/form-data">
+                            @csrf
+                                <div class="form-group">
+                                Quantity:
+                                <input type="text" name="quantity" class="form-control"><br>
+                                <input type="hidden" name="product" value="{{$product->name}}"><br>
+                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}"><br>
+                                <input type="hidden" name="price" value="{{$product->price}}"><br>
+                                <button type="submit" class="btn btn-success">Order Item</button>
+                                </div>
+                            </form>
                     <button class="btn btn-info text-center d-inline-block text-white" data-toggle="modal" data-target="#modal{{$product->name}}" style="width:auto;">View Details</button>
                 </div>
             </div>
@@ -336,8 +346,8 @@
                             <img src="{{$product->img_path}}" class="img-thumbnail">
                         </div>
                         <div class="col-lg-4">
-                            <p>{{$product->description}}</p>
                             <p>{{$product->price}}</p>
+                            <p>{{$product->description}}</p>
                             <form method="POST" action="/orders" enctype="multipart/form-data">
                             @csrf
                                 <div class="form-group">
