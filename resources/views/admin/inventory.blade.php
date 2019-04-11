@@ -237,15 +237,15 @@
                                 <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
                                 &nbsp;
                             </form>
-                             <form method="GET" action="/sortbycategory" class="d-inline">
+                             <form method="GET" action="/sorthistorybycategory" class="d-inline">
                                 @csrf
                                 <button class="btn text-center btn-light" type="submit">Sort By Category</i></button>
                             </form>
-                            <form method="GET" action="/sortbyprice" class="d-inline just">
+                            <form method="GET" action="/sorthistorybyprice" class="d-inline just">
                                 @csrf
                                 <button class="btn text-center btn-light" type="submit">Sort By Price</i></button>
                             </form>
-                             <form method="GET" action="/sortbyname" class="d-inline">
+                             <form method="GET" action="/sorthistorybyname" class="d-inline">
                                 @csrf
                                 <button class="btn text-center btn-light" type="submit">Sort By Name</i></button>
                             </form>

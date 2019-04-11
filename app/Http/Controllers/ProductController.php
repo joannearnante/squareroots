@@ -274,5 +274,12 @@ class ProductController extends Controller
 
         return view("admin.inventory", compact('categories', 'products','productstocks'));
     }
+
+    public function sorthistorybycategory() {
+        $categories = Category::all();
+        $products = Products::orderBy('category_id')->get();
+
+        return view("admin.inventory", compact('categories', 'products'));
+    }
     
 }
