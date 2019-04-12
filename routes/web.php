@@ -57,4 +57,6 @@ Route::get('sortbyname', 'ProductController@sortbyname');
 
 Route::get('sortbycategory', 'ProductController@sortbycategory');
 
+Route::get('search', 'ProductController@search');
+
 /*Route::get('sorthistory', 'ProductController@sorthistorybyprice');*/

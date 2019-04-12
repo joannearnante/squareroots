@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('product');
             $table->unsignedBigInteger('quantity');
-            $table->enum('status', array('pending', 'confirmed', 'completed','cancelled'));
+            $table->enum('status', array('pending', 'confirmed', 'completed','declined'));
             $table->decimal("total", 10, 2);
             $table->timestamps();
 

@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price', 10, 2);
             $table->string("img_path");
             $table->enum('status', array('active', 'inactive', 'sold'));
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
             //relate categories and items
@@ -27,6 +28,12 @@ class CreateProductsTable extends Migration
             ->references('id')
             ->on('categories')
             ->onDelete("restrict")
+            ->onUpdate("cascade");
+
+            $table->foreign('order_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete("set null")
             ->onUpdate("cascade");
         });
     }

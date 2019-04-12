@@ -2,17 +2,39 @@
 @extends('layouts.app')
 
 @section('content')
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Inventory Dashboard</h4>
+                    </div>
+                    <div class="card-body">
+                        <h2>Welcome, {{Auth::user()->name}}!</h2>
+                        <p>What would you like to do today?</p>
+                        <nav class="nav nav-pills nav-justified">
+                                <a class="btn-light btn col-3" href="/products">Manage Active Inventory</a>
+                                <a class="btn-light btn col-3" href="/products">Manage Categories</a>
+                                <a class="btn-light btn col-3" href="/products/create" id="addproductbtn" color="black">Add Product</a>
+                                <a class="btn-light btn col-3" href="/products">Manage Inventory History</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
 
         <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Add New Product</div>
+                    <div class="card-header"><h4>Add New Product</h4></div>
 
                     <div class="card-body">
 
                 <form method="POST" action="/products" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="order_id" id="order_id" value="null">
                     <div class="row">
                         <div class="col-6 d-inline-block">
                             <div class="form-group">

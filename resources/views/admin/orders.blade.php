@@ -7,19 +7,18 @@
 		            <div class="col-md-12">
 		                <div class="card">
 		                    <div class="card-header"><h4>Orders</h4></div>
-
 		                    <div class="card-body">
 						    	<table class="table">
 									<thead>
 										<tr>
-											<td>Reference Number</td>
-											<td>User Id</td>
-											<td>Date</td>
-											<td>Products</td>
-											<td>Quantity</td>
-											<td>Total</td>
-											<td>Status</td>
-											<td>Action</td>
+											<th>Reference Number</th>
+											<th>User Id</th>
+											<th>Date</th>
+											<th>Products</th>
+											<th>Quantity</th>
+											<th>Total</th>
+											<th>Status</th>
+											<th width="250px">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -34,24 +33,34 @@
 												<td>{{$order->status}}</td>
 													<br>
 												<td>
-													@if($order->status == 'pending')
 													<form method="POST" action="/orders/{{$order->id}}" class="d-inline-block">
                                                         @csrf
                                                         @method('PUT')
-                                                        <select name="status">
-                                                        	<option value="confirmed">confirmed</option>
-                                                        	<option value="completed">completed</option>
-                                                        	<option value="cancelled">cancelled</option>
-                                                        </select>
-                                                        <input type="hidden" name="quantity" class="form-control" value="{{$order->quantity}}">
-						                                <input type="hidden" name="product" value="{{$order->product}}">
-						                                <input type="hidden" name="user_id" value="{{$order->user_id}}">
-						                                <input type="hidden" name="refNo" value="{{$order->refNo}}">
-						                                <input type="hidden" name="price" value="{{$order->total}}">
-                                                        <input type="submit" name="">
+                                                        	<input type="hidden" name="quantity" class="form-control" value="{{$order->quantity}}">
+							                                <input type="hidden" name="product" value="{{$order->product}}">
+							                                <input type="hidden" name="user_id" value="{{$order->user_id}}">
+							                                <input type="hidden" name="refNo" value="{{$order->refNo}}">
+							                                <input type="hidden" name="total" value="{{$order->total}}">
+                                                        	@if($order->status == 'pending')
+	                                                    		<select name="status" class="form-control d-inline-block" style="width:130px;">
+	                                                        		<option value="confirmed">confirmed</option>
+	                                                        		<option value="declined">declined</option>
+	                                                        		<option value="completed">completed</option>
+	                                                    		</select>
+	                                                    		<button type="submit" class="btn btn-success d-inline-block">
+	                                                        	<i class="fas fa-check"></i>
+                                                        		</button>
+                                                    		@endif
+                                                        	@if($order->status == 'confirmed')
+                                                        	<select name="status" class="form-control d-inline-block" style="width:130px;">
+                                                        		<option value="completed">completed</option>
+                                                        		<option value="declined">declined</option>
+                                                    		</select>
+                                                    		<button type="submit" class="btn btn-success d-inline-block">
+                                                        	<i class="fas fa-check"></i>
+                                                        	</button>
+                                                        	@endif
                                                     </form>
-                                                    @else
-                                                    @endif
                                                 </td>
                                             </tr>
 	                                    @endforeach

@@ -13,19 +13,17 @@
                         <h2>Welcome, {{Auth::user()->name}}!</h2>
                         <p>What would you like to do today?</p>
                         <nav class="nav nav-pills nav-justified">
-                                <button class="btn-light btn col-3" onclick="activeinventorycard()">Manage Active Inventory</button>
-                                <button class="btn-light btn col-3" onclick="categoriescard()">Manage Categories</button>
-                                <button class="btn-light btn col-3">
-                                    <a href="/products/create" id="addproductbtn" color="black">Add Product</a>
-                                </button>
-                                <button class="btn-light btn col-3" onclick="inventoryhistorycard()">Manage Inventory History</button>
-                            </div>
+                            <a class="btn-light btn col-3" onclick="activeinventorycard()">Manage Active Inventory</a>
+                            <a class="btn-light btn col-3" onclick="categoriescard()">Manage Categories</a>
+                            <a class="btn-light btn col-3" href="/products/create" id="addproductbtn" color="black">Add Product</a>
+                            <a class="btn-light btn col-3" onclick="inventoryhistorycard()">Manage Inventory History</a>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
         </div>
-
+        <br>
 {{-- ACTIVE INVENTORY --}}
         <div class="container" id="activeinventorycard">
             <div class="row justify-content-center">
@@ -35,25 +33,26 @@
                             <h4>Active Inventory</h4>
                         </div>
                         <div class="card-body">
-                            <h6 class="d-inline">Search</h6>
-                            <form action="/search" method="POST" role="search" class="d-inline">
-                            @csrf
-                                <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
-                                placeholder="search inventory">
-                                <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
-                                &nbsp;
-                            </form>
                             <form method="GET" action="/sortbycategory" class="d-inline">
                                 @csrf
-                                <button class="btn text-center btn-light" type="submit">Sort By Category</i></button>
+                                 <button class="btn text-center btn-white" style="text-decoration: none; cursor: default;">Sort By:</button>
+                                <button class="btn text-center btn-light" type="submit">Category</i></button>
                             </form>
                             <form method="GET" action="/sortbyprice" class="d-inline just">
                                 @csrf
-                                <button class="btn text-center btn-light" type="submit">Sort By Price</i></button>
+                                <button class="btn text-center btn-light" type="submit">Price</i></button>
                             </form>
                              <form method="GET" action="/sortbyname" class="d-inline">
                                 @csrf
-                                <button class="btn text-center btn-light" type="submit">Sort By Name</i></button>
+                                <button class="btn text-center btn-light" type="submit">Name</i></button>
+                            </form>
+                            <div style="width: 39%; background-color: red" class="d-inline-block"></div>
+                            <form action="/search" method="GET" role="search" class="d-inline">
+                                @csrf
+                                <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
+                                placeholder="search product">
+                                <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
+                                &nbsp;
                             </form>
                             <br><br>
                             <table class="table table-striped">
@@ -78,7 +77,7 @@
                                                 @endif
                                             @endforeach
                                             <td>{{$item->name}}</td>
-                                            <td><img src="{{$item->img_path}}" class="img-thumbnail" style="width: 150px;"></td>
+                                            <td><img src="{{$item->img_path}}" class="img-thumbnail" data-toggle="modal" data-target="#modal{{$product->name}}" style="width: 150px;"></td>
                                             <td>{{$item->price}}</td>
                                             <td>
                                                 <form method="POST" action="/subtract/{{$item->name}}" class="d-inline">
@@ -94,7 +93,7 @@
                                                 </form>    
                                             </td>
                                             <td>
-                                                <a class="btn btn-info text-center" href="/products/{{$product->id}}/edit"><i class="fas fa-edit" style="color:white; width: auto;"></i></a>
+                                                <a class="btn btn-info text-center" href="/products/{{$item->name}}/edit"><i class="fas fa-edit" style="color:white; width: auto;"></i></a>
 
                                                 <form method="POST" action="/disableall/{{$item->name}}" class="d-inline-block">
                                                         @csrf
@@ -112,7 +111,6 @@
             </div>
         </div>
 {{-- CATEGORIES --}} 
-        <br>
         <div class="container" {{-- style="display: none;" --}} id="categoriescard" style="display: none;">
             <div class="row justify-content-center">
 {{-- CATEGORIES LIST --}}
@@ -219,7 +217,6 @@
                 </div>
             </div>
         </div>
-        <br>
 
 {{-- INVENTORY HISTORY --}}
         <div class="container" id="inventoryhistorycard" style="display: none;">
@@ -301,67 +298,88 @@
 {{-- SHOP VIEW --}}
     @else
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <h1 class="text-center">Products</h1>
-            </div>
-        </div>
-        <br>
+        <h1 class="pl-4">Products</h1>
+        <form method="GET" action="/sortbycategory" class="d-inline pl-4">
+            @csrf
+             <button class="btn text-center btn-white" style="text-decoration: none; cursor: default;">Sort By:</button>
+            <button class="btn text-center btn-light" type="submit">Category</i></button>
+        </form>
+        <form method="GET" action="/sortbyprice" class="d-inline just">
+            @csrf
+            <button class="btn text-center btn-light" type="submit">Price</i></button>
+        </form>
+         <form method="GET" action="/sortbyname" class="d-inline">
+            @csrf
+            <button class="btn text-center btn-light" type="submit">Name</i></button>
+        </form>
+        <div style="width: 38%; background-color: red" class="d-inline-block"></div>
+        <form action="/search" method="GET" role="search" class="d-inline">
+            @csrf
+            <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
+            placeholder="search product">
+            <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
+            &nbsp;
+        </form>
+        <div class="justify-content-center">
             @foreach($productstocks as $product)
-                <div class="card d-inline-block col-lg-3">
-                    <img class="card-img-top" src="{{$product->img_path}}" alt="Card image cap"data-toggle="modal" data-target="#modal{{$product->name}}">
+                <div class="container" style="width:33%; display: inline-block;">
+                    <div class="card my-3 p-3">
+                        <img class="card-img-top" src="{{$product->img_path}}" alt="Card image cap" data-toggle="modal" data-target="#modal{{$product->name}}">
                         <div class="card-body">
                             <h5 class="card-title">{{$product->name}}</h5>
                             <p class="card-text">&#8369;{{$product->price}}</p>
                             <form method="POST" action="/orders" enctype="multipart/form-data" class="d-inline-block">
-                                    @csrf
-                                    <div class="form-group">
-                                        Quantity:&nbsp;
-                                        <input type="text" name="quantity" class="form-control d-inline-block col-6"><br>
-                                        <input type="hidden" name="product" value="{{$product->name}}">
-                                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                        <input type="hidden" name="price" value="{{$product->price}}"><br>
-                                        <button type="submit" class="col-8 btn btn-success d-inline-block">order Item</button>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>     
-    {{-- ABOUT MODAL --}}
-    <div class="modal fade" tabindex="-1" id="modal{{$product->name}}">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{$product->name}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-5" style="height: 100%;">
-                            <img src="{{$product->img_path}}" class="img-thumbnail">
-                        </div>
-                        <div class="col-lg-4">
-                            <p>&#8369;{{$product->price}}</p>
-                            <p>{{$product->description}}</p>
-                            <form method="POST" action="/orders" enctype="multipart/form-data">
-                            @csrf
+                                @csrf
                                 <div class="form-group">
-                                Quantity:
-                                <input type="text" name="quantity" class="form-control"><br>
-                                <input type="hidden" name="product" value="{{$product->name}}">
-                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                <input type="hidden" name="price" value="{{$product->price}}">
-                                <button type="submit" class="btn btn-success">Order Item</button>
+                                    Quantity:&nbsp;
+                                    <input type="text" name="quantity" class="form-control d-inline-block col-6"><br>
+                                    <input type="hidden" name="product" value="{{$product->name}}">
+                                    <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                    <input type="hidden" name="price" value="{{$product->price}}"><br>
+                                    <button type="submit" class="col-8 btn btn-success d-inline-block">order Item</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+                
+    {{-- ABOUT MODAL --}}
+                <div class="modal fade" tabindex="-1" id="modal{{$product->name}}">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{$product->name}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-5" style="height: 100%;">
+                                        <img src="{{$product->img_path}}" class="img-thumbnail">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p>&#8369;{{$product->price}}</p>
+                                        <p>{{$product->description}}</p>
+                                        <form method="POST" action="/orders" enctype="multipart/form-data">
+                                        @csrf
+                                            <div class="form-group">
+                                            Quantity:
+                                            <input type="text" name="quantity" class="form-control"><br>
+                                            <input type="hidden" name="product" value="{{$product->name}}">
+                                            <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                            <input type="hidden" name="price" value="{{$product->price}}">
+                                            <button type="submit" class="btn btn-success">Order Item</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    @endforeach
             </div>
         </div>
-    </div>
-        @endforeach
-    </div>
     @endif
 @endsection

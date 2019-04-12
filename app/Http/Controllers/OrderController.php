@@ -17,7 +17,8 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
-        return view("admin.orders", compact('orders'));
+        $products = Product::all();
+        return view("admin.orders", compact('orders','products'));
     }
 
     /**
@@ -93,15 +94,47 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $order = Order::find($id);
+        $quantity = $request->quantity;
 
-        $order->user_id = $request->user_id;
-        $order->product = $request->product;
-        $order->quantity = $request->quantity;
-        $order->total = $request->total;
-        $order->refNo = $request->refNo;
-        $order->status = $request->status;
-        
-        $order->save();
+        $newstatus = $request->status;
+
+        if($newstatus == 'confirmed'){
+            $order->user_id = $request->user_id;
+            $order->product = $request->product;
+            $order->quantity = $request->quantity;
+            $order->total = $request->total;
+            $order->refNo = $request->refNo;
+            $order->status = 'confirmed';
+            $stock = Product::where('name', '=', $order->product)
+            ->take($quantity)
+            ->delete();
+
+            $order->save();
+
+            /*$update = Product::where('name', '=', $order->product)
+            ->take($order->quantity)
+            ->update('status','sold');*/
+        }
+         if($newstatus == 'completed'){
+            $order->user_id = $request->user_id;
+            $order->product = $request->product;
+            $order->quantity = $request->quantity;
+            $order->total = $request->total;
+            $order->refNo = $request->refNo;
+            $order->status = 'completed';
+
+            $order->save();
+        }
+         if($newstatus == 'declined'){
+            $order->user_id = $request->user_id;
+            $order->product = $request->product;
+            $order->quantity = $request->quantity;
+            $order->total = $request->total;
+            $order->refNo = $request->refNo;
+            $order->status = 'declined';
+
+            $order->save();
+        }
 
         return redirect("/orders");
     }
