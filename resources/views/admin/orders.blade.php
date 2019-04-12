@@ -47,7 +47,7 @@
 	                                                        		<option value="declined">declined</option>
 	                                                        		<option value="completed">completed</option>
 	                                                    		</select>
-	                                                    		<button type="submit" class="btn btn-success d-inline-block">
+	                                                    		<button type="submit" class="btn btn-success d-inline-block" id="button1">
 	                                                        	<i class="fas fa-check"></i>
                                                         		</button>
                                                     		@endif
@@ -61,6 +61,14 @@
                                                         	</button>
                                                         	@endif
                                                     </form>
+                                                    <form method="POST" action="/buy/{{$order->product}}" class="d-inline-block">
+                                                    	@csrf
+                                                    	@if($order->status == 'pending')
+                                                    		 <input type="hidden" name="product" value="{{$order->product}}">
+                                                    		<button name="buy" type="submit" style="background:transparent; border: none; font-size: 0; text-decoration: none; cursor: default;" id="button2">
+                                                        	confirmed</button>
+                                                    	@endif
+                                            		</form>
                                                 </td>
                                             </tr>
 	                                    @endforeach

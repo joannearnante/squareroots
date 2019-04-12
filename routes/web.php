@@ -59,4 +59,6 @@ Route::get('sortbycategory', 'ProductController@sortbycategory');
 
 Route::get('search', 'ProductController@search');
 
+Route::post('buy/{name}', 'ProductController@buy');
+
 /*Route::get('sorthistory', 'ProductController@sorthistorybyprice');*/

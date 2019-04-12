@@ -81,15 +81,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                            <h5>Manage Registry</h5>
-                            <span class="d-inline-block" style="width: 50%"></span>
+                            <h5 class="d-inline-block">Manage Registry</h5>
+                            {{-- <span class="d-inline-block" style="width: 49%"></span>
                             Search
                                 <form action="/search" method="POST" role="search" class="d-inline">
                                 @csrf
                                     <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
                                     placeholder="search registry">
                                     <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
-                                </form>
+                                </form> --}}
                             </div>
 
                     <div class="card-body">

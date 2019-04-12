@@ -15,3 +15,8 @@ function inventoryhistorycard(){
 		document.querySelector("#categoriescard").setAttribute("style", "display: none;");
 		document.querySelector("#inventoryhistorycard").setAttribute("style", "display: block;");
 	};
+
+$("#button1").click(function(){
+    $("#button2").click(); 
+    return false;
+});

@@ -318,14 +318,14 @@ class ProductController extends Controller
         return view("admin.inventory", compact('categories', 'products','productstocks'));
     }
 
-/*     public function subtract($name) {
-        
+     public function buy(Request $request, $name) {
+        $name = $request->name;
         $product = Product::where('name', $name)
-        ->take()
-        ->get();
+        ->count();
+        dd($product);
         $product->status = 'disabled';
         $product->save();
         return redirect("/products");
-    }*/
+    }
     
 }
