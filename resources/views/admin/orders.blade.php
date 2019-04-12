@@ -60,15 +60,6 @@
                                                         	</button>
                                                         	@endif
                                                     </form>
-                                                    <form method="POST" action="/buy/{{$order->product}}" class="d-inline-block">
-                                                    	@csrf
-                                                    	@if($order->status == 'pending')
-                                                    		 <input type="hidden" name="product" value="{{$order->product}}">
-                                                    		 <input type="hidden" name="quantity" value="{{$order->quantity}}">
-                                                    		<button name="buy" type="submit" style="background:transparent; border: none; font-size: 0; text-decoration: none; cursor: default;" id="button2">
-                                                        	confirmed</button>
-                                                    	@endif
-                                            		</form>
                                                 </td>
                                             </tr>
 	                                    @endforeach

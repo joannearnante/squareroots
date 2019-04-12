@@ -23,7 +23,7 @@ class ProductController extends Controller
 
         $productstocks = DB::table('products')
             ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
-            ->where('status','active')
+            /*->where('status','active')*/
             ->groupBy('category_id')
             ->groupBy('name')
             ->groupBy('price')
@@ -45,7 +45,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        /*$categories = Category::all();
         $products = Product::all();
 
        $productstocks = DB::table('products')
@@ -60,7 +60,7 @@ class ProductController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view("admin.add_product", compact('categories', 'products','productstocks'));
+        return view("admin.inventory", compact('categories', 'products','productstocks'));*/
     }
 
     /**
@@ -133,17 +133,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*$oldname = Product::select('name')->where('id', $id)->get();*/
         $oldname = Product::where('id', '=', $id)
             ->pluck('name');
 
-/*        $rules = array(
+        $rules = array(
             "name" => "required",
             "description" => "required",
             "price" => "required|numeric"
         );
 
-        $this->validate($request, $rules);*/
+        $this->validate($request, $rules);
 
         if($request->file('image')!=null){
             $image = $request->file('image');
@@ -161,33 +160,12 @@ class ProductController extends Controller
             $update = Product::where('name', '=', $oldname)->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription, 'img_path' => $newimage]);
         }
 
-       /* $update = Product::where('name', '=', $oldname)->update(['name' => $newname, 'price' => $newprice, 'description' => '$newdescription']);*/
-
             $newname = $request->name;
             $newprice = $request->price;
             $newdescription = $request->description;
             $newcategory = $request->category_id;
 
             $update = Product::where('name', '=', $oldname)->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription]);
-            /*$updateimage =  Product::where('name', '=', $oldname)->update(['img_path' => $newimage]);*/
-
-/*        $product->name = $request->name;*/
-        /*$product->description = $request->description;
-        $product->price = $request->price;
-        $product->category_id = $request->category;
-
-        if($request->file('image')!=null){
-            $image = $request->file('image');
-            $image_name = time(). "." . $image->getClientOriginalExtension();
-            $destination = "images/";
-            $image->move($destination, $image_name);
-
-            $product->img_path = "/".$destination.$image_name;
-        }*/
-        
-       /* $product->update(['name' => $refname, 'price' => $product->price]);*/
-
-        /*dd($product);*/
 
         return redirect("/products");
     }
@@ -212,7 +190,11 @@ class ProductController extends Controller
     }
 
     public function subtract($name) {
-        $product = Product::where('name', $name)->first();
+        $product = Product::where('name', $name)
+        ->where('status', 'active')
+        ->first()
+        ->get();
+        
         $product->status = 'disabled';
         $product->save();
         return redirect("/products");
@@ -232,6 +214,24 @@ class ProductController extends Controller
         dd($disable);
 
         return redirect("/products");
+    }
+
+    public function sortbycategory($id) {
+        $categories = Category::all();
+        $products = Product::all();
+
+        $productstocks = DB::table('products')
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
+            ->where('category_id',$id)
+            ->groupBy('category_id')
+            ->groupBy('name')
+            ->groupBy('price')
+            ->groupBy('description')
+            ->groupBy('img_path')
+            ->orderBy('name')
+            ->get();
+
+        return view("admin.inventory", compact('categories', 'products','productstocks'));
     }
 
     public function sortbyprice() {
@@ -270,7 +270,7 @@ class ProductController extends Controller
         return view("admin.inventory", compact('categories', 'products','productstocks'));
     }
 
-     public function sortbycategory() {
+     /*public function sortbycategory() {
         $categories = Category::all();
         $products = Product::all();
 
@@ -287,15 +287,15 @@ class ProductController extends Controller
             ->get();
 
         return view("admin.inventory", compact('categories', 'products','productstocks'));
-    }
+    }*/
 
-    public function sorthistorybycategory() {
+   /* public function sorthistorybycategory() {
         $categories = Category::all();
         $products = Products::orderBy('category_id')->get();
 
         return view("admin.inventory", compact('categories', 'products'));
     }
-
+*/
      public function search(Request $request) {
         $categories = Category::all();
         $products = Product::all();
@@ -325,10 +325,6 @@ class ProductController extends Controller
         ->take($quantity)
         ->update(['status' => 'sold']);
 
-        /*$product->status = 'sold';
-        $product->update();*/
-/*
-         $update = Product::where('name', '=', $oldname)->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription]);*/
         return redirect("/products");
     }
     

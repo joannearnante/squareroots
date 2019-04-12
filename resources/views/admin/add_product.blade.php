@@ -1,4 +1,4 @@
-{{-- ADD PRODUCT --}}
+{{-- ADD PRODUCT --}}{{-- 
 @extends('layouts.app')
 
 @section('content')
@@ -78,4 +78,4 @@
     </div>
     <br>
 
-@endsection
+@endsection --}}

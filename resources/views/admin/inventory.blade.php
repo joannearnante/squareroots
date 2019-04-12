@@ -3,29 +3,29 @@
 @section('content')
     @if(Auth::user()->isAdmin == 'true')
         <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Inventory Dashboard</h4>
-                    </div>
-                    <div class="card-body">
-                        <h2>Welcome, {{Auth::user()->name}}!</h2>
-                        <p>What would you like to do today?</p>
-                        <nav class="nav nav-pills nav-justified">
-                            <a class="btn-light btn col-3" onclick="activeinventorycard()">Manage Active Inventory</a>
-                            <a class="btn-light btn col-3" onclick="categoriescard()">Manage Categories</a>
-                            <a class="btn-light btn col-3" href="/products/create" id="addproductbtn" color="black">Add Product</a>
-                            <a class="btn-light btn col-3" onclick="inventoryhistorycard()">Manage Inventory History</a>
-                        </nav>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Inventory Dashboard</h4>
+                        </div>
+                        <div class="card-body">
+                            <h2>Welcome, {{Auth::user()->name}}!</h2>
+                            <p>What would you like to do today?</p>
+                            <nav class="nav nav-pills nav-justified">
+                                <a class="btn-light btn col-3" onclick="toggleinventory()">Manage Active Inventory</a>
+                                <a class="btn-light btn col-3" onclick="togglecategories()">Manage Categories</a>
+                                <a class="btn-light btn col-3" onclick="toggleaddproduct()">Add New Product</a>
+                                <a class="btn-light btn col-3" onclick="togglehistory()">Manage Inventory History</a>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-        <br>
 {{-- ACTIVE INVENTORY --}}
-        <div class="container" id="activeinventorycard">
+        <div class="container" id="toggleinventory">
+            <br>
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -33,11 +33,15 @@
                             <h4>Active Inventory</h4>
                         </div>
                         <div class="card-body">
-                            <form method="GET" action="/sortbycategory" class="d-inline">
-                                @csrf
-                                 <button class="btn text-center btn-white" style="text-decoration: none; cursor: default;">Sort By:</button>
-                                <button class="btn text-center btn-light" type="submit">Category</i></button>
-                            </form>
+                                <label for="navbarDropdown" class="col-form-label text-md-right">Sort by: </label>
+                                    <button class="btn btn-light dropdown-toggle d-inline-block" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Category
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @foreach($categories as $category)
+                                            <a href="/sortbycategory/{{$category->id}}" class="dropdown-item" value="{{$category->id}}">{{$category->name}}</a>
+                                        @endforeach
+                                    </div>
                             <form method="GET" action="/sortbyprice" class="d-inline just">
                                 @csrf
                                 <button class="btn text-center btn-light" type="submit">Price</i></button>
@@ -63,6 +67,7 @@
                                         <th>Image</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
+                                        <th>Update Quantity</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -77,19 +82,23 @@
                                                 @endif
                                             @endforeach
                                             <td>{{$item->name}}</td>
-                                            <td><img src="{{$item->img_path}}" class="img-thumbnail" data-toggle="modal" data-target="#modal{{$product->name}}" style="width: 150px;"></td>
+                                            <td><img src="{{$item->img_path}}" class="img-thumbnail" data-toggle="modal" data-target="#modal{{$item->name}}" style="width: 150px;"></td>
                                             <td>{{$item->price}}</td>
+                                            <td>{{$item->stocks}}</td>
                                             <td>
                                                 <form method="POST" action="/subtract/{{$item->name}}" class="d-inline">
                                                     @csrf
-                                                    <button class="btn text-center btn-light" type="submit"><i class="fas fa-minus" style="color:gray;"></i></button>
+                                                    <input class="d-inline-block form-control col-sm-4" type="number" name="number" min="1" max="5" placeholder="0">
+                                                    <a class="btn btn-light text-center" href="/products/{{$item->name}}/edit">add</a>
+                                                    <a class="btn btn-light text-center" href="/products/{{$item->name}}/edit">set</a>
+                                                    {{-- button class="btn text-center btn-light" type="submit"><i class="fas fa-minus" style="color:gray;"></i></button>
                                                 </form>
 
                                                 &nbsp;&nbsp;{{$item->stocks}}&nbsp;&nbsp;
 
                                                 <form method="POST" action="/add/{{$item->name}}" class="d-inline">
                                                     @csrf
-                                                    <button class="btn btn-secondary text-center" type="submit"><i class="fas fa-plus" style="color:white;"></i></button>
+                                                    <button class="btn btn-secondary text-center" type="submit"><i class="fas fa-plus" style="color:white;"></i></button> --}}
                                                 </form>    
                                             </td>
                                             <td>
@@ -111,7 +120,8 @@
             </div>
         </div>
 {{-- CATEGORIES --}} 
-        <div class="container" {{-- style="display: none;" --}} id="categoriescard" style="display: none;">
+        <div class="container" id="togglecategories" style="display: none;">
+            <br>
             <div class="row justify-content-center">
 {{-- CATEGORIES LIST --}}
                 <div class="col-md-6">
@@ -218,8 +228,62 @@
             </div>
         </div>
 
+{{-- ADD PRODUCT --}}
+        <div class="container" id="toggleaddproduct" style="display: none;">
+            <br>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header"><h4>Add New Product</h4></div>
+                            <div class="card-body">
+                                <form method="POST" action="/products" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="order_id" id="order_id" value="null">
+                                    <div class="row">
+                                        <div class="col-6 d-inline-block">
+                                            <div class="form-group">
+                                                <label for="name">Name:</label>
+                                                <input type="text" name="name" id="name" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Description:</label>
+                                                <textarea name="description" id="description" class="form-control" rows="8"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 d-inline-block">
+                                            <div class="form-group">
+                                                <label for="category">Category:</label>
+                                                <select name="category" class="form-control">
+                                                    @foreach($categories as $category)
+                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="price">Price:</label>
+                                                <input type="number" name="price" id="price" step=0.01 min=0 class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="image">Upload Image:</label>
+                                                <input type="file" name="image" id="image" class="form-control">
+                                            </div>
+                                            <br>
+                                            <div class="form-group d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-success">Add new product</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {{-- INVENTORY HISTORY --}}
-        <div class="container" id="inventoryhistorycard" style="display: none;">
+        <div class="container" id="togglehistory" style="display: none;">
+            <br>
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -227,26 +291,6 @@
                         <h4>Inventory History</h4>
                         </div>
                         <div class="card-body">
-                            {{-- <form action="/search" method="POST" role="search" class="d-inline">
-                            @csrf
-                                <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
-                                placeholder="search inventory">
-                                <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
-                                &nbsp;
-                            </form>
-                             <form method="GET" action="/sorthistorybycategory" class="d-inline">
-                                @csrf
-                                <button class="btn text-center btn-light" type="submit">Sort By Category</i></button>
-                            </form>
-                            <form method="GET" action="/sorthistorybyprice" class="d-inline just">
-                                @csrf
-                                <button class="btn text-center btn-light" type="submit">Sort By Price</i></button>
-                            </form>
-                             <form method="GET" action="/sorthistorybyname" class="d-inline">
-                                @csrf
-                                <button class="btn text-center btn-light" type="submit">Sort By Name</i></button>
-                            </form>
-                            <br><br> --}}
                            <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -293,7 +337,6 @@
                 </div>
             </div>
         </div>
-        <br>
 
 {{-- SHOP VIEW --}}
     @else

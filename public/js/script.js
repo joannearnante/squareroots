@@ -1,22 +1,35 @@
-function activeinventorycard(){
-		document.querySelector("#activeinventorycard").setAttribute("style", "display: block;");
-		document.querySelector("#categoriescard").setAttribute("style", "display: none;");
-		document.querySelector("#inventoryhistorycard").setAttribute("style", "display: none;");
-	};
+function toggleaddproduct() {
+  var x = document.getElementById("toggleaddproduct");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+};
 
-function categoriescard(){
-		document.querySelector("#activeinventorycard").setAttribute("style", "display: none;");
-		document.querySelector("#categoriescard").setAttribute("style", "display: block;");
-		document.querySelector("#inventoryhistorycard").setAttribute("style", "display: none;");
-	};
+function togglecategories() {
+  var x = document.getElementById("togglecategories");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+};
 
-function inventoryhistorycard(){
-		document.querySelector("#activeinventorycard").setAttribute("style", "display: none;");
-		document.querySelector("#categoriescard").setAttribute("style", "display: none;");
-		document.querySelector("#inventoryhistorycard").setAttribute("style", "display: block;");
-	};
+function toggleinventory() {
+  var x = document.getElementById("toggleinventory");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+};
 
-$("#button1").click(function(){
-    $("#button2").click(); 
-    return false;
-});
+function togglehistory() {
+  var x = document.getElementById("togglehistory");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+};

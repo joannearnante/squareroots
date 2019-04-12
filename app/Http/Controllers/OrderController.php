@@ -93,10 +93,14 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $order = Order::find($id);
         $quantity = $request->quantity;
 
         $newstatus = $request->status;
+
+        $update = Product::where('name', '=', $order->product)
+            ->take($order->quantity)->update(['status' => 'sold']);
 
         if($newstatus == 'confirmed'){
             $order->user_id = $request->user_id;
@@ -105,16 +109,9 @@ class OrderController extends Controller
             $order->total = $request->total;
             $order->refNo = $request->refNo;
             $order->status = 'confirmed';
-            $stock = Product::where('name', '=', $order->product)
-            ->take($quantity)
-            ->delete();
-
             $order->save();
+            }
 
-            /*$update = Product::where('name', '=', $order->product)
-            ->take($order->quantity)
-            ->update('status','sold');*/
-        }
          if($newstatus == 'completed'){
             $order->user_id = $request->user_id;
             $order->product = $request->product;
