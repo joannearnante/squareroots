@@ -328,6 +328,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{$product->name}}</h5>
                             <p class="card-text">&#8369;{{$product->price}}</p>
+                            @if($product->status == 'active')
                             <form method="POST" action="/orders" enctype="multipart/form-data" class="d-inline-block">
                                 @csrf
                                 <div class="form-group">
@@ -339,6 +340,9 @@
                                     <button type="submit" class="col-8 btn btn-success d-inline-block">order Item</button>
                                 </div>
                             </form>
+                            @else
+                            <p>Item out of stock</p>
+                            @endif
                         </div>
                     </div>
                 </div>

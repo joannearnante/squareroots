@@ -43,9 +43,8 @@
 							                                <input type="hidden" name="total" value="{{$order->total}}">
                                                         	@if($order->status == 'pending')
 	                                                    		<select name="status" class="form-control d-inline-block" style="width:130px;">
-	                                                        		<option value="confirmed">confirmed</option>
-	                                                        		<option value="declined">declined</option>
-	                                                        		<option value="completed">completed</option>
+	                                                        		<option value="confirmed">confirm</option>
+	                                                        		<option value="declined">decline</option>
 	                                                    		</select>
 	                                                    		<button type="submit" class="btn btn-success d-inline-block" id="button1">
 	                                                        	<i class="fas fa-check"></i>
@@ -53,8 +52,8 @@
                                                     		@endif
                                                         	@if($order->status == 'confirmed')
                                                         	<select name="status" class="form-control d-inline-block" style="width:130px;">
-                                                        		<option value="completed">completed</option>
-                                                        		<option value="declined">declined</option>
+                                                        		<option value="completed">complete</option>
+                                                        		{{-- <option value="declined">decline</option> --}}
                                                     		</select>
                                                     		<button type="submit" class="btn btn-success d-inline-block">
                                                         	<i class="fas fa-check"></i>
@@ -65,6 +64,7 @@
                                                     	@csrf
                                                     	@if($order->status == 'pending')
                                                     		 <input type="hidden" name="product" value="{{$order->product}}">
+                                                    		 <input type="hidden" name="quantity" value="{{$order->quantity}}">
                                                     		<button name="buy" type="submit" style="background:transparent; border: none; font-size: 0; text-decoration: none; cursor: default;" id="button2">
                                                         	confirmed</button>
                                                     	@endif

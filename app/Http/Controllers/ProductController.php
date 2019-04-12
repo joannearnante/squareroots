@@ -320,11 +320,15 @@ class ProductController extends Controller
 
      public function buy(Request $request, $name) {
         $name = $request->name;
+        $quantity = $request->quantity;
         $product = Product::where('name', $name)
-        ->count();
-        dd($product);
-        $product->status = 'disabled';
-        $product->save();
+        ->take($quantity)
+        ->update(['status' => 'sold']);
+
+        /*$product->status = 'sold';
+        $product->update();*/
+/*
+         $update = Product::where('name', '=', $oldname)->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription]);*/
         return redirect("/products");
     }
     
