@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- @if(Auth::user()->isAdmin == 'true') --}}
+    @if(Auth::user()->isAdmin == 'true')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Register New Member</div>
+                    <div class="card-header"><h5>Register New Member</h5></div>
 
                     <div class="card-body">
                         <form method="POST" action="/members">
@@ -81,7 +81,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                            Manage Registry
+                            <h5>Manage Registry</h5>
                             <span class="d-inline-block" style="width: 50%"></span>
                             Search
                                 <form action="/search" method="POST" role="search" class="d-inline">
@@ -227,7 +227,7 @@
             </div>
         </div>
     </div>
-   {{--  @else
+    @else
         invalid
-    @endif --}}
+    @endif
 @endsection
