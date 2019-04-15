@@ -45,9 +45,11 @@ Route::resource('categories', 'CategoryController');
 
 Route::resource('orders', 'OrderController');
 
-Route::post('subtract/{name}', 'ProductController@subtract');
+/*Route::post('subtract/{name}', 'ProductController@subtract');*/
 
-Route::post('add/{name}', 'ProductController@add');
+Route::post('add', 'ProductController@add');
+
+Route::post('set', 'ProductController@set');
 
 Route::post('disableall/{name}', 'ProductController@disableall');
 

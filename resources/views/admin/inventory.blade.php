@@ -86,19 +86,17 @@
                                             <td>{{$item->price}}</td>
                                             <td>{{$item->stocks}}</td>
                                             <td>
-                                                <form method="POST" action="/subtract/{{$item->name}}" class="d-inline">
+                                                <form method="POST" action="/add" class="d-inline">
                                                     @csrf
-                                                    <input class="d-inline-block form-control col-sm-4" type="number" name="number" min="1" max="5" placeholder="0">
-                                                    <a class="btn btn-light text-center" href="/products/{{$item->name}}/edit">add</a>
-                                                    <a class="btn btn-light text-center" href="/products/{{$item->name}}/edit">set</a>
-                                                    {{-- button class="btn text-center btn-light" type="submit"><i class="fas fa-minus" style="color:gray;"></i></button>
+                                                    <input type="hidden" name="product" id="product" value="{{$item->name}}">
+                                                    <input class="d-inline-block form-control col-sm-4" type="number" name="number" min="1" placeholder="0">
+                                                    <button class="btn btn-light text-center" type="submit">add</button><br>
                                                 </form>
-
-                                                &nbsp;&nbsp;{{$item->stocks}}&nbsp;&nbsp;
-
-                                                <form method="POST" action="/add/{{$item->name}}" class="d-inline">
+                                                    <form method="POST" action="/set" class="d-inline">
                                                     @csrf
-                                                    <button class="btn btn-secondary text-center" type="submit"><i class="fas fa-plus" style="color:white;"></i></button> --}}
+                                                    <input type="hidden" name="product" id="product" value="{{$item->name}}">
+                                                    <input class="d-inline-block form-control col-sm-4" type="number" name="number" placeholder="0">
+                                                    <button class="btn btn-light text-center" type="submit">set</button>
                                                 </form>    
                                             </td>
                                             <td>
@@ -342,11 +340,15 @@
     @else
     <div class="container">
         <h1 class="pl-4">Products</h1>
-        <form method="GET" action="/sortbycategory" class="d-inline pl-4">
-            @csrf
-             <button class="btn text-center btn-white" style="text-decoration: none; cursor: default;">Sort By:</button>
-            <button class="btn text-center btn-light" type="submit">Category</i></button>
-        </form>
+       <label for="navbarDropdown" class="col-form-label text-md-right">Sort by: </label>
+        <button class="btn btn-light dropdown-toggle d-inline-block" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Category
+        </button>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            @foreach($categories as $category)
+                <a href="/sortbycategory/{{$category->id}}" class="dropdown-item" value="{{$category->id}}">{{$category->name}}</a>
+            @endforeach
+        </div>
         <form method="GET" action="/sortbyprice" class="d-inline just">
             @csrf
             <button class="btn text-center btn-light" type="submit">Price</i></button>
@@ -355,7 +357,7 @@
             @csrf
             <button class="btn text-center btn-light" type="submit">Name</i></button>
         </form>
-        <div style="width: 38%; background-color: red" class="d-inline-block"></div>
+        <div style="width: 39%; background-color: red" class="d-inline-block"></div>
         <form action="/search" method="GET" role="search" class="d-inline">
             @csrf
             <input type="text" class="form-control d-inline-block col-3 ml-2" name="q"
@@ -363,6 +365,7 @@
             <button class="btn btn-info" type="submit"><i class="fas fa-search" style="color:white;"></i></button>
             &nbsp;
         </form>
+       </div>
         <div class="justify-content-center">
             @foreach($productstocks as $product)
                 <div class="container" style="width:33%; display: inline-block;">
@@ -371,7 +374,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{$product->name}}</h5>
                             <p class="card-text">&#8369;{{$product->price}}</p>
-                            @if($product->status == 'active')
+                            @if($product->status = 'active')
                             <form method="POST" action="/orders" enctype="multipart/form-data" class="d-inline-block">
                                 @csrf
                                 <div class="form-group">

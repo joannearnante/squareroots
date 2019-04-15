@@ -17,13 +17,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::all()->sortByDesc("id");
         $categories = Category::all();
         $user = Auth::user();
 
         $productstocks = DB::table('products')
-            ->select(array('category_id', 'name', 'price', 'description', 'img_path', \DB::raw('count(*) as stocks')))
-            /*->where('status','active')*/
+            ->select(array('category_id', 'name', 'price', 'description', 'img_path', 'status', \DB::raw('count(*) as stocks')))
+            ->where('status','active')
             ->groupBy('category_id')
             ->groupBy('name')
             ->groupBy('price')
@@ -32,8 +32,6 @@ class ProductController extends Controller
             ->orderBy('category_id')
             ->orderBy('name')
             ->get();
-
-        /*dd($productstocks);*/
 
         return view("admin.inventory", compact('products', 'categories', 'user', 'productstocks'));
     }
@@ -157,7 +155,8 @@ class ProductController extends Controller
             $newdescription = $request->description;
             $newcategory = $request->category_id;
 
-            $update = Product::where('name', '=', $oldname)->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription, 'img_path' => $newimage]);
+            $update = Product::where('name', '=', $oldname)
+            ->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription, 'img_path' => $newimage]);
         }
 
             $newname = $request->name;
@@ -165,7 +164,8 @@ class ProductController extends Controller
             $newdescription = $request->description;
             $newcategory = $request->category_id;
 
-            $update = Product::where('name', '=', $oldname)->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription]);
+            $update = Product::where('name', '=', $oldname)
+            ->update(['category_id' => $newcategory,'name' => $newname, 'price' => $newprice, 'description' => $newdescription]);
 
         return redirect("/products");
     }
@@ -189,7 +189,7 @@ class ProductController extends Controller
         return redirect("/products");
     }
 
-    public function subtract($name) {
+    /*public function subtract($name) {
         $product = Product::where('name', $name)
         ->where('status', 'active')
         ->first()
@@ -198,13 +198,65 @@ class ProductController extends Controller
         $product->status = 'disabled';
         $product->save();
         return redirect("/products");
+    }*/
+
+    public function add(Request $request) {
+        $number = $request->number;
+        $reqproduct = $request->product;
+        
+        for($i = 1; $i <= $number; $i++) {
+            $newproduct = Product::where('name', $reqproduct)
+            ->where('status','active')
+            ->first()
+            ->replicate()
+            ->save();
+        };
+
+        return redirect("/products");
     }
 
-    public function add($name) {
-        $product = Product::where('name', $name)->first();
-        $newproduct = $product->replicate();
-        $product->status = 'active';
-        $newproduct->save();
+    public function set(Request $request) {
+        $number = $request->number;
+        $reqproduct = $request->product;
+        $oldtotal = Product::where('name', $reqproduct)
+            ->where('status','active')
+            ->count();     
+
+        if ($number > $oldtotal) {
+            
+            $newtotal = $number-$oldtotal;
+
+            for($i = 1; $i <= $newtotal; $i++) {
+                $newproduct = Product::where('name', $reqproduct)
+                ->where('status','active')
+                ->first()
+                ->replicate()
+                ->save();
+            };
+        };
+
+         if ($number < $oldtotal){
+
+            $disable = $oldtotal-$number;
+            
+
+            /*for($i = 1; $i <= $disable; $i++) {*/
+                $updateproduct = Product::where('name', $reqproduct)
+                ->where('status', 'active')
+                ->take($disable)
+                ->update(['status' => 'inactive']);
+            /*};*/
+
+        };
+        
+        /*for($i = 1; $i <= $number; $i++) {
+            $newproduct = Product::where('name', $reqproduct)
+            ->where('status','active')
+            ->first()
+            ->replicate()
+            ->save();
+        };*/
+
         return redirect("/products");
     }
 
@@ -322,6 +374,7 @@ class ProductController extends Controller
         $name = $request->name;
         $quantity = $request->quantity;
         $product = Product::where('name', $name)
+        ->where('status', 'active')
         ->take($quantity)
         ->update(['status' => 'sold']);
 
